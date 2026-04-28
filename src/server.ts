@@ -6,6 +6,14 @@ import { env } from "./config/env";
 import { logger } from "./utils/logger";
 
 async function bootstrap() {
+  logger.info("Starting server", {
+    nodeEnv: env.NODE_ENV,
+    port: env.PORT,
+    hasMongoUri: Boolean(env.MONGODB_URI),
+    hasClerkSecretKey: Boolean(env.CLERK_SECRET_KEY),
+    corsOrigins: env.CORS_ORIGIN
+  });
+
   await connectDatabase();
 
   const app = createApp();

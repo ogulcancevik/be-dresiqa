@@ -4,11 +4,15 @@ import { env } from "./env";
 
 export async function connectDatabase() {
   try {
-    await mongoose.connect(env.MONGODB_URI);
+    await mongoose.connect(env.MONGODB_URI, {
+      serverSelectionTimeoutMS: 10000
+    });
     logger.info("MongoDB connected");
   } catch (error) {
-    logger.error("MongoDB connection failed", error);
-    process.exit(1);
+    logger.error("MongoDB connection failed. Check MONGODB_URI and Atlas Network Access/IP allowlist.", {
+      message: error instanceof Error ? error.message : String(error)
+    });
+    throw error;
   }
 }
 
