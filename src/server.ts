@@ -1,7 +1,7 @@
 import { createServer } from "node:http";
 
 import { createApp } from "./app";
-import { connectDatabase, disconnectDatabase } from "./config/database";
+import { connectDatabase, disconnectDatabase, scheduleDatabaseReconnect } from "./config/database";
 import { env } from "./config/env";
 import { logger } from "./utils/logger";
 
@@ -14,7 +14,12 @@ async function bootstrap() {
     corsOrigins: env.CORS_ORIGIN
   });
 
-  await connectDatabase();
+  const isDatabaseConnected = await connectDatabase();
+
+  if (!isDatabaseConnected) {
+    logger.warn("Server will start without MongoDB. Health check will report database as disconnected.");
+    scheduleDatabaseReconnect();
+  }
 
   const app = createApp();
   const server = createServer(app);
