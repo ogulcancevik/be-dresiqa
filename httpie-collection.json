@@ -1,0 +1,60 @@
+{
+  "info": {
+    "_postman_id": "78fbb6b1-2a35-4a54-8b11-78d9de29d001",
+    "name": "be-dresiqa API",
+    "description": "Express TypeScript backend requests for local development. Import this file into HTTPie, then set the collection variables.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "clerkToken",
+      "value": "paste-your-clerk-session-token-here"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "health"]
+        },
+        "description": "Checks if the API is running and whether MongoDB is connected."
+      }
+    },
+    {
+      "name": "Get Current User",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{clerkToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/me",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "me"]
+        },
+        "description": "Protected Clerk route. Paste a Clerk session token into the clerkToken variable before sending."
+      }
+    }
+  ]
+}
