@@ -24,6 +24,11 @@ async function bootstrap() {
   const app = createApp();
   const server = createServer(app);
 
+  server.on("error", (error) => {
+    logger.error("HTTP server failed", error);
+    process.exit(1);
+  });
+
   server.listen(env.PORT, () => {
     logger.info(`Server running on http://localhost:${env.PORT}`);
   });
